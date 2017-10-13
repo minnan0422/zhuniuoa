@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>请假申请</title>
+    <link rel="stylesheet" href="https://unpkg.com/mobi.css/dist/mobi.min.css">
+</head>
+<body>
+<div class="flex-center">
+    <div class="container">
+        <div>
+            <h1 class="logo"><a href="{% url 'oa:offtime' %}">OA系统</a></h1>
+            {% if user.is_authenticated %}
+                <p>你已登录，欢迎你：<a href="#">{{ user.username }}</a></p>
+                <button class="btn btn-default"><a href="{% url 'logout' %}?next={{ request.path }}">注销登录</a></button>
+
+                <br/>
+                <button class="btn btn-default"><a href="{% url 'oa:overtime' %}">加班申请</a></button>
+                <button class="btn btn-default"><a href="{% url 'oa:offtime' %}">请假申请</a></button>
+                <button class="btn btn-default"><a href="{% url 'oa:select' %}">记录查询</a></button>
+                <button class="btn btn-default"><a href="{% url 'oa:totaltime' user.id %}">可调休时间</a></button>
+                <button class="btn btn-default"><a href="{% url 'users:index' %}">返回首页</a></button>
+                <form class="form" action="{% url 'oa:offtime' %}" method="post">
+                    {% csrf_token %}
+
+                        <div class="fieldWrapper">
+                          <label for="id_body">请假原由:</label>
+                            {{ form.body }}
+                        </div>
+                        <div class="fieldWrapper">
+                          <label for="id_start_time">开始时间:（输入示例：2017-09-11 09:01）</label>
+                            {{ form.start_time }}
+                        </div>
+                        <div class="fieldWrapper">
+                          <label for="id_end_time">结束时间:（输入示例：2017-09-11 09:01）</label>
+                            {{ form.end_time }}
+                        </div>
+                        <div class="fieldWrapper">
+                          <label for="id_off_time">总计时间:</label>
+                            {{ form.off_time }}
+                        </div>
+                        <div class="fieldWrapper">
+                          <label for="id_oa_user">申请人:</label>
+                            {{ form.oa_user }}
+                        </div>
+                        {% if field.help_text %}
+                            <p class="help text-small text-muted">{{ field.help_text|safe }}</p>
+                        {% endif %}
+
+                   <button type="submit" class="btn btn-primary btn-block" >提交</button>
+                </form>
+            {% else %}
+                <p>您已退出登录，请返回登录页面重新登录<br/>
+                    <button class="btn btn-default"><a href="{% url 'login' %}?next={{ request.path }}">登录</a></button>
+                </p>
+
+
+
+
+            {% endif %}
+
+
+
+        </div>
+    </div>
+</div>
+</body>
